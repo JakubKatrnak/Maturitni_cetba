@@ -1,6 +1,5 @@
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-
+import 'package:projekt_prj/quote.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -20,11 +19,29 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('MATURITNÍ ČETBA'),
-        centerTitle: true,
-        backgroundColor: Colors.black,
-        //backgroundColor: Colors.red[600],
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100),
+        child: AppBar(
+          title: Text('MATURITNÍ ČETBA'),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: ClipPath(
+            clipper: MyCustomClipperForAppBar(),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF0D47A1),
+                    Color(0xFF1976D2),
+                    Color(0xFF42A5F5),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
       ),
 
       body: Container(
@@ -34,7 +51,6 @@ class _HomeState extends State<Home> {
             fit: BoxFit.cover,
           ),
         ),
-
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -45,10 +61,25 @@ class _HomeState extends State<Home> {
                 height: 50,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {},
-                    child: Text('Knihy', style: TextStyle(color: Colors.white),),
-                    color: Colors.grey[800],
-                    //color: Colors.lightBlue,
+                  onPressed: () {},
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          Color(0xFF0D47A1),
+                          Color(0xFF1976D2),
+                          Color(0xFF42A5F5),
+                        ],
+                      ),
+                    ),
+                    padding: EdgeInsets.fromLTRB(125.0, 12.0, 125.0, 15.0),
+                    child: Text('Knihy',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
                   ),
               ),
               SizedBox(height: 30.0),
@@ -58,10 +89,25 @@ class _HomeState extends State<Home> {
                 height: 50,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                    onPressed: () {},
-                    child: Text('Deník', style: TextStyle(color: Colors.white),),
-                    color: Colors.grey[800],
-                    //color: Colors.lightBlue,
+                  onPressed: () {},
+                  textColor: Colors.white,
+                  padding: const EdgeInsets.all(0.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20.0),
+                      gradient: LinearGradient(
+                        colors: <Color>[
+                          Color(0xFF0D47A1),
+                          Color(0xFF1976D2),
+                          Color(0xFF42A5F5),
+                        ],
+                      ),
+                    ),
+                    padding: EdgeInsets.fromLTRB(124.0, 15.0, 125.0, 15.0),
+                    child: Text('Deník',
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
                   ),
               ),
 
@@ -73,32 +119,40 @@ class _HomeState extends State<Home> {
                 child: Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20.0),
-                    color: Colors.grey[800],
+                    gradient: LinearGradient(
+                      colors: <Color>[
+                        Color(0xFF0D47A1),
+                        Color(0xFF1976D2),
+                        Color(0xFF42A5F5),
+                      ],
+                    ),
                     //color: Colors.lightBlue,
                   ),
-                  child: DropdownButton(
-                    underline: SizedBox(),
-                    hint: Text(' Vyber školu', style: TextStyle(color: Colors.white),),
-                    icon: Icon(Icons.arrow_circle_down, color: Colors.white,),
-                    iconSize: 32,
-                    value: _schoolsVal,
-                      onChanged: (value) {
-                        setState(() {
-                          _schoolsVal = value;
-                        });
-                      },
-                    items: _schoolsName.map((value){
-                      return DropdownMenuItem(
-                        value: value,
-                        child: Text(value),
-                      );
-                    }).toList(),
+                  child: Center(
+                    child: DropdownButton(
+                      underline: SizedBox(),
+                      hint: Text(' Vyber školu',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                      icon: Icon(Icons.arrow_circle_down, color: Colors.white,),
+                      iconSize: 32,
+                      value: _schoolsVal,
+                        onChanged: (value) {
+                          setState(() {
+                            _schoolsVal = value;
+                          });
+                        },
+                      items: _schoolsName.map((value){
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                   ),
                 ),
               ),
-
               SizedBox(height: 18.0),
-
             ],
           ),
         ),
