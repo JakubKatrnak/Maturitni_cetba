@@ -1,5 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:projekt_prj/quote.dart';
+import 'package:projekt_prj/dairy_pages/dairy.dart';
+import 'library.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -10,7 +13,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   List _schoolsName = [
-    ' Střední škola služeb', ' SŠPHZ', ' MESIT střední škola', ' Gymnázium Uherské Hradiště', ' Soukromá střední škola', ' OAUH', ' Střední uměleckoprůmyslová škola',
+    ' Střední škola služeb', ' SŠPHZ', ' MESIT střední škola', ' Gymnázium Uherské Hradiště', ' Soukromá střední škola', ' OAUH', ' SUPSUH',
   ];
   String _schoolsVal;
 
@@ -61,7 +64,12 @@ class _HomeState extends State<Home> {
                 height: 50,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BooksList()),
+                    );
+                  },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
                   child: Container(
@@ -75,9 +83,9 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                    padding: EdgeInsets.fromLTRB(125.0, 12.0, 125.0, 15.0),
+                    padding: EdgeInsets.fromLTRB(126.0, 15.0, 126.0, 15.0),
                     child: Text('Knihy',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                   ),
@@ -89,7 +97,12 @@ class _HomeState extends State<Home> {
                 height: 50,
                 child: RaisedButton(
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => BookLists()),
+                    );
+                  },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
                   child: Container(
@@ -103,9 +116,9 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                    padding: EdgeInsets.fromLTRB(124.0, 15.0, 125.0, 15.0),
+                    padding: EdgeInsets.fromLTRB(126.0, 15.0, 126.0, 15.0),
                     child: Text('Deník',
-                      style: TextStyle(fontSize: 20),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                   ),
@@ -130,12 +143,12 @@ class _HomeState extends State<Home> {
                   ),
                   child: Center(
                     child: DropdownButton(
-                      underline: SizedBox(),
+                     // style: TextStyle(color: Colors.white),
                       hint: Text(' Vyber školu',
                         style: TextStyle(color: Colors.white),
                       ),
                       icon: Icon(Icons.arrow_circle_down, color: Colors.white,),
-                      iconSize: 32,
+                      iconSize: 24,
                       value: _schoolsVal,
                         onChanged: (value) {
                           setState(() {
@@ -145,8 +158,10 @@ class _HomeState extends State<Home> {
                       items: _schoolsName.map((value){
                         return DropdownMenuItem(
                           value: value,
-                          child: Text(value),
-                        );
+                          child: Text(
+                            value,
+                          ),
+                      );
                       }).toList(),
                     ),
                   ),

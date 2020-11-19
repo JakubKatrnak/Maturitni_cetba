@@ -1,15 +1,5 @@
 import 'package:flutter/material.dart';
 
-class Quote {
-
-  String text;
-  String author;
-
-  Quote({this.text, this.author}){
-
-  }
-}
-
 class MyCustomClipperForAppBar extends CustomClipper<Path>{
   @override
   Path getClip(Size size){
