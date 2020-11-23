@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projekt_prj/dairy_pages/soon.dart';
 import 'package:projekt_prj/quote.dart';
-import 'package:projekt_prj/dairy_pages/dairy.dart';
 import 'library.dart';
 
 class Home extends StatefulWidget {
@@ -13,7 +13,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
 
   List _schoolsName = [
-    ' Střední škola služeb', ' SŠPHZ', ' MESIT střední škola', ' Gymnázium Uherské Hradiště', ' Soukromá střední škola', ' OAUH', ' SUPSUH',
+    /*' Střední škola služeb', ' SŠPHZ', ' MESIT střední škola', ' Gymnázium Uherské Hradiště', ' Soukromá střední škola', */' OAUH',/* ' SUPSUH',*/
   ];
   String _schoolsVal;
 
@@ -96,11 +96,20 @@ class _HomeState extends State<Home> {
                 width: 300,
                 height: 50,
                 child: RaisedButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                      /*side: LinearGradient(
+                        colors: <Color>[
+                          Color(0xFF0D47A1),
+                          Color(0xFF1976D2),
+                          Color(0xFF42A5F5),
+                        ],
+                      ),*/
+                  ),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BookLists()),
+                      MaterialPageRoute(builder: (context) => LoadingScreen()),
                     );
                   },
                   textColor: Colors.white,
@@ -144,7 +153,7 @@ class _HomeState extends State<Home> {
                   child: Center(
                     child: DropdownButton(
                      // style: TextStyle(color: Colors.white),
-                      hint: Text(' Vyber školu',
+                      hint: Text(' Vyber školu ',
                         style: TextStyle(color: Colors.white),
                       ),
                       icon: Icon(Icons.arrow_circle_down, color: Colors.white,),
