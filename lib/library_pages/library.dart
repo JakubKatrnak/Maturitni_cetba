@@ -166,7 +166,7 @@ class _BooksListState extends State<BooksList> {
                     child: Center(
                       child: DropdownButton(
                         // style: TextStyle(color: Colors.white),
-                        hint: Text(' Vyber školu',
+                        hint: Text('Období',
                           style: TextStyle(color: Colors.white),
                         ),
                         icon: Icon(Icons.arrow_circle_down, color: Colors.white,),
