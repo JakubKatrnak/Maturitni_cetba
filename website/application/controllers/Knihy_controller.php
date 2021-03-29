@@ -20,7 +20,7 @@ class Knihy_controller extends Application
 
 		$data['book'] = $this->firebase()->get('/oauh_knihy/'.$id);
 
-		$data['title'] = "Home";
+		$data['title'] = $data['book']['nazev_knihy'];
 
 		$this->load->view('header', $data);
 		$this->load->view($view);
