@@ -1,7 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:projekt_prj/dairy_pages/soon.dart';
+import 'package:projekt_prj/dairy_pages/dairy.dart';
+import 'package:projekt_prj/login/login.dart';
 import 'package:projekt_prj/quote.dart';
+import 'package:projekt_prj/setting.dart';
 import 'library.dart';
 
 class Home extends StatefulWidget {
@@ -9,13 +11,17 @@ class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
 }
-
 class _HomeState extends State<Home> {
 
+
+
   List _schoolsName = [
-    /*' Střední škola služeb', ' SŠPHZ', ' MESIT střední škola', ' Gymnázium Uherské Hradiště', ' Soukromá střední škola', */' OAUH',/* ' SUPSUH',*/
+    /*' Střední škola služeb', ' SŠPHZ', ' MESIT střední škola', ' Gymnázium Uherské Hradiště', ' Soukromá střední škola',*/ ' OAUH',/* ' SUPSUH',*/
   ];
+
   String _schoolsVal;
+  double x = 300.0;
+  double y = 50.0;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +30,33 @@ class _HomeState extends State<Home> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.account_circle,
+              color: Colors.white,
+            ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => LoginPage()),
+                );
+              },
+          ),
           title: Text('MATURITNÍ ČETBA'),
+          actions: <Widget>[
+            IconButton(
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.white,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SettingPage()),
+                  );
+                },
+            )
+          ],
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -47,39 +79,70 @@ class _HomeState extends State<Home> {
 
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/image_2.jpg'),
-            fit: BoxFit.cover,
+            image: DecorationImage(
+              image: AssetImage('assets/images/image_2.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
-        ),
+
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              SizedBox(
+                width: x,
+                height: y,
+                  child: RaisedButton(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
+                    onPressed: () async {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => BooksList()),
+                      );
+                    },
+                    textColor: Colors.white,
+                    padding: const EdgeInsets.all(0.0),
+                    child: Container(
+                      width: x,
+                      height: y,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20.0),
+                        gradient: LinearGradient(
+                          colors: <Color>[
+                            Color(0xFF0D47A1),
+                            Color(0xFF1976D2),
+                            Color(0xFF42A5F5),
+                          ],
+                        ),
+                      ),
+                      child: Center(
+                        child: Text('Knihy',
+                        style: TextStyle(fontSize: 17),
+                    ),
+                      ),
+                  ),
+                  ),
+                ),
+              //),
+              SizedBox(height: 30.0),
 
               SizedBox(
-                width: 300,
-                height: 50,
+                width: x,
+                height: y,
                 child: RaisedButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BooksList()),
+                      MaterialPageRoute(builder: (context) => Dairy()),
                     );
                   },
                   textColor: Colors.white,
                   padding: const EdgeInsets.all(0.0),
                   child: Container(
+                    width: x,
+                    height: y,
                     decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
                       borderRadius: BorderRadius.circular(20.0),
                       gradient: LinearGradient(
                         colors: <Color>[
@@ -89,79 +152,22 @@ class _HomeState extends State<Home> {
                         ],
                       ),
                     ),
-                    padding: EdgeInsets.fromLTRB(126.0, 15.0, 126.0, 15.0),
-                    child: Text('Knihy',
-                      style: TextStyle(fontSize: 17),
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(height: 30.0),
-
-              SizedBox(
-                width: 300,
-                height: 50,
-                child: RaisedButton(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20),
-                    /*side: LinearGradient(
-                        colors: <Color>[
-                          Color(0xFF0D47A1),
-                          Color(0xFF1976D2),
-                          Color(0xFF42A5F5),
-                        ],
-                      ),*/
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoadingScreen()),
-                    );
-                  },
-                  textColor: Colors.white,
-                  padding: const EdgeInsets.all(0.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 3), // changes position of shadow
-                        ),
-                      ],
-                      borderRadius: BorderRadius.circular(20.0),
-                      gradient: LinearGradient(
-                        colors: <Color>[
-                          Color(0xFF0D47A1),
-                          Color(0xFF1976D2),
-                          Color(0xFF42A5F5),
-                        ],
+                    child: Center(
+                      child: Text('Deník',
+                        style: TextStyle(fontSize: 17),
                       ),
                     ),
-                    padding: EdgeInsets.fromLTRB(126.0, 15.0, 126.0, 15.0),
-                    child: Text('Deník',
-                      style: TextStyle(fontSize: 17),
-                    ),
                   ),
                 ),
               ),
-
+              //),
               SizedBox(height: 30.0),
 
               SizedBox(
-                height: 50,
-                width: 300,
+                height: y,
+                width: x,
                 child: Container(
                   decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
-                        spreadRadius: 5,
-                        blurRadius: 7,
-                        offset: Offset(0, 3), // changes position of shadow
-                      ),
-                    ],
                     borderRadius: BorderRadius.circular(20.0),
                     gradient: LinearGradient(
                       colors: <Color>[
@@ -199,7 +205,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               SizedBox(height: 18.0),
-
             ],
           ),
         ),

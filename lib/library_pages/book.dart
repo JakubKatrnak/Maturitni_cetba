@@ -57,16 +57,17 @@ class _BookState extends State<Book> {
       ),
 
 
-      body: FirebaseAnimatedList(
-        query: bookRef,
-        itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double>animation, int){
-          Map kniha = snapshot.value;
-          return _buildBookItem(kniha: kniha);
-        },
+      body: Container(
+        child: FirebaseAnimatedList(
+            query: bookRef,
+            itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double>animation, int){
+              Map kniha = snapshot.value;
+              return _buildBookItem(kniha: kniha);
+            },
+          ),
       ),
     );
   }
-
 
   Widget _buildBookItem({Map kniha}){
     double cWidth = MediaQuery.of(context).size.width*0.8;
