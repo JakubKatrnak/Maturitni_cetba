@@ -1,0 +1,12 @@
+.border-white {
+    border-right: 10px solid white;
+    border-left: 10px solid white;
+}
+
+.text-white, .log-a {
+    color: white !important;
+}
+
+.bg-login-form {
+    background-color: white;
+}
