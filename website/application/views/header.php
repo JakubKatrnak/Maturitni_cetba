@@ -28,7 +28,7 @@
                     </div>
                     <ul class="navbar-nav navbar-right d-none d-md-none d-lg-inline"> <!-- pro velké zařízení -->
                         <?php if($this->session->userdata('logged_in') === TRUE): ?>
-                        <li class="pr-2"><a class="log-a" href="<?php echo base_url('profile/'.$this->session->user_id);?>"><?php echo $this->session->userdata('email');?></a></li>
+                        <li class="pr-2"><a class="log-a" href="<?php echo base_url('profile/'.$this->session->userdata('uid'));?>"><?php echo $this->session->userdata('email');?></a></li>
                         <li class="pr-2 float-right"><a class="log-a" href="<?php echo site_url('logout');?>">Odhlásit se <i class="fas fa-sign-out-alt"></i></a></li>
                         <?php else: ?>
                         <li class="pr-2"><a class="log-a" href="<?php echo site_url('login');?>">Přihlášení <i class="fas fa-sign-in-alt"></i></a></li>

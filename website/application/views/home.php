@@ -1,4 +1,3 @@
-<?php $knihas; ?>
 <div class="container">
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-12 jumbotron mt-5 border-white">
@@ -22,6 +21,7 @@
             </a>
             <div class="card-columns">
                 <!-- start card-columns -->
+
                 <?php foreach ($knihy as $kniha) {
                     if (!empty($kniha)) { ?>
                         <a href="<?php echo base_url('kniha/' . $kniha['id_knihy']); ?>">
@@ -33,7 +33,7 @@
                                 </div>
                             </div>
                         </a>
-                <?php }
+                    <?php }
                 } ?>
             </div> <!-- end card-columns -->
         </div>

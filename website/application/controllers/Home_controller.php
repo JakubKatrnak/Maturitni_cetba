@@ -9,6 +9,9 @@ class Home_controller extends Application
 	function __construct()
 	{
 		parent::__construct();
+		if (!$this->session->userdata('logged_in')){
+			redirect(base_url('login'));
+		} 
 	}
 
 	public function home()
@@ -19,8 +22,15 @@ class Home_controller extends Application
 		}
 
 		$limit = 9;
-		$data['knihy'] = array_slice($this->firebase()->get('/oauh_knihy'), 0, $limit+1);
-		$data['deniky'] = $this->firebase()->get('/deniky');
+		$data['knihy'] = $this->database()
+			->getReference('oauh_knihy')
+			->orderByKey()
+			->limitToFirst($limit)
+			->getValue();
+		/*$data['deniky'] = $this->database()
+		->getReference('users/'.$this->session->userdata('uid').'/deniky')
+		->orderByKey()
+		->getValue();*/
 
 
 		$data['title'] = "Home";

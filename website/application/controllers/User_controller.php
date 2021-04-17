@@ -33,9 +33,32 @@ class User_controller extends Application
         if (!$this->session->userdata('logged_in')) {
             $user_email = $this->input->post('email', TRUE);
             $user_password = $this->input->post('password', TRUE);
-            $users = $this->firebase()->get('/users');
+            try{
+                $user = $this->auth()->getUserByEmail($user_email);
+                try{
+                $authenticate = $this->auth()->signInWithEmailAndPassword($user_email, $user_password);
 
-            $keyRaw = array_search($user_email, array_column($users, 'email')); // raw key (from php) is different than key used in firebase
+    
+                    $userdata = $authenticate->data();
+                    $sesdata = array( // nastavení session dat
+                        'uid' => $userdata['localId'],
+                        'email' => $userdata['email'],
+                        'logged_in' => TRUE,
+                    );
+                    $this->session->set_userdata($sesdata);
+                    redirect('home');
+                }catch(Throwable $e){
+                    echo $this->session->set_flashdata('msg-login', 'Zadané heslo se neshoduje');
+                    redirect('login');
+                }
+            }catch(\Kreait\Firebase\Exception\Auth\UserNotFound $e){
+                echo $this->session->set_flashdata('msg-login', 'Účet s tímto emailem neexistuje');
+                redirect('login');
+            }
+            
+
+
+            /*$keyRaw = array_search($user_email, array_column($users, 'email')); // raw key (from php) is different than key used in firebase
             $key = $keyRaw + 1;
 
             if (is_int($key)) { // if key exists
@@ -51,7 +74,7 @@ class User_controller extends Application
                     $user_email = $user['email'];
                     $user_group = $user['group'];
                     $sesdata = array( // nastavení session dat
-                        'user_id' => $user_id,
+                        'uid' => $user_id,
                         'user_email' => $user_email,
                         'user_group' => $user_group,
                         'logged_in' => TRUE,
@@ -66,7 +89,7 @@ class User_controller extends Application
             } else {
                 echo $this->session->set_flashdata('msg-login', 'Účet s tímto emailem neexistuje');
                 redirect('login');
-            }
+            }*/
         } else {
             redirect('home');
         }
@@ -92,35 +115,26 @@ class User_controller extends Application
     public function validate() // validace registrace
     {
         $user_email = $this->input->post('email', TRUE);
-        $users = $this->firebase()->get('/users');
-        $max_uid = max(array_column($users, 'uid'));
+        $password_raw = $this->input->post('password', TRUE);
 
-        $key = array_search($user_email, array_column($users, 'email'));
-        if ($key != NULL) {
-            $check_data = $users[$key];
-        } else {
-            $check_data = 0;
-        }
-
-        if (empty($check_data)) { // validace emailu jestli je již použitý
-            // zaregistruje uživatele
-            $uid = $max_uid + 1;
-
-            $user_password_hash = password_hash($this->input->post('password', TRUE), PASSWORD_DEFAULT);
-
-            $register_data = array();
-            $register_data['id'] = $uid;
-            $register_data['password'] = $user_password_hash;
-            $register_data['email'] = $user_email;
-            $register_data['group'] = 'user';
-
-            $this->firebase()->set('/users/' . $uid, $register_data);
-
-            $this->session->set_flashdata('success', 'Registrace proběhla úspěšně');
-            redirect('login');
-        } else {
+        try{
+            $this->auth()->getUserByEmail($user_email);
             echo $this->session->set_flashdata('msg-register', 'Účet s touto emailovou adresou již existuje');
             redirect('registrace');
+        }catch(\Kreait\Firebase\Exception\Auth\UserNotFound $e){
+            if(strlen($password_raw) < 6){ // here should be try catch statement because auth throws exception if password has less than 6 chars
+                echo $this->session->set_flashdata('msg-register', 'Heslo musí obsahovat minimálně 6 znaků');
+                redirect('registrace');
+            }
+            $register_data =  [
+                'password' => $password_raw,
+                'email' => $user_email,
+                'group' => 'user', // every new user has user group for now
+            ];
+            $this->auth()->createUser($register_data);
+            
+            $this->session->set_flashdata('success', 'Registrace proběhla úspěšně');
+            redirect('login');
         }
     }
 
