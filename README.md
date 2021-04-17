@@ -32,6 +32,7 @@ Webové stránky budou fungovat velice podobně jako aplikace, smyslem je uživa
 </p>
 
 ### Dokumentace:
+- [Dokumentace](../main/doc/dokumentace.doc)
 - [Uživatelská dokumentace](../main/doc/uzivatelska_dokumentace.pdf)
 - [Návrhová dokumentace](../main/doc/design.md)
 - [Wireframe](../main/doc/Wireframe.pdf) | [Wireframe - web](../main/website/doc/wireframe-png.png)
