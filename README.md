@@ -37,6 +37,6 @@ Webové stránky budou fungovat velice podobně jako aplikace, smyslem je uživa
 - [Návrhová dokumentace](../main/doc/design.md)
 - [Wireframe](../main/doc/Wireframe.pdf) | [Wireframe - web](../main/website/doc/wireframe-png.png)
 - [Use-case](../main/doc/diagram.png)
-- [Class diagram](../main/doc/diagram_trid.png) | [Class diagram - nový](../main/website/doc/diagram_trid.png)
+- [Class diagram](../main/doc/diagram_trid.png) | [Class diagram - web](../main/website/doc/class-diagram.png)
 - [Plán postupu](../main/doc/plan.md)
 - [Uživatelské role](../main/doc/person.md)
