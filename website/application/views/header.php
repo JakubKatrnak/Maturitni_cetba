@@ -9,8 +9,11 @@
     <script type="text/javascript" src="<?php echo base_url('assets/js/js.js') ?>"></script> <!-- custom js -->
 	<script type="text/javascript"> (function() { var css = document.createElement('link'); css.href = 'https://use.fontawesome.com/releases/v5.1.0/css/all.css'; css.rel = 'stylesheet'; css.type = 'text/css'; document.getElementsByTagName('head')[0].appendChild(css); })(); </script> <!-- načte font awesome před obsahem stránky => není vidět že se načítají pomalu -->
     <link rel="stylesheet" href="<?php echo base_url('assets/css/css.css'); ?>">
+    <link rel="icon" href="<?php echo base_url('img/favicon.ico')?>">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
+<script type="text/javascript"> $(function () { $('[data-toggle="tooltip"]').tooltip()}) </script> <!-- načte bs4 tooltip -->
 <div class="container-fluid bg-primary"> <!-- Start fluid container for nav-->                
         <div class="sticky-top"> <!-- Start NAV -->
             <div class="d-flex justify-content-lg-center justify-content-md-center justify-content-sm-between w-100">
@@ -28,7 +31,7 @@
                     </div>
                     <ul class="navbar-nav navbar-right d-none d-md-none d-lg-inline"> <!-- pro velké zařízení -->
                         <?php if($this->session->userdata('logged_in') === TRUE): ?>
-                        <li class="pr-2"><a class="log-a" href="<?php echo base_url('profile/'.$this->session->userdata('uid'));?>"><?php echo $this->session->userdata('email');?></a></li>
+                        <li class="pr-2"><a class="log-a" href="<?php echo base_url('profile/'.$this->session->userdata('uid'));?>" data-toggle="tooltip" data-placement="left" title="<?php echo $this->session->userdata('uid')?>"><?php echo $this->session->userdata('email');?></a></li>
                         <li class="pr-2 float-right"><a class="log-a" href="<?php echo site_url('logout');?>">Odhlásit se <i class="fas fa-sign-out-alt"></i></a></li>
                         <?php else: ?>
                         <li class="pr-2"><a class="log-a" href="<?php echo site_url('login');?>">Přihlášení <i class="fas fa-sign-in-alt"></i></a></li>
@@ -37,7 +40,7 @@
                     </ul>
                     <ul class="navbar-nav navbar-right d-lg-none d-md-inline d-inline"> <!-- pro malé zařízení -->
                         <?php if($this->session->userdata('logged_in') === TRUE): ?>
-                        <li class="pr-2 text-white"><?php echo $this->session->userdata('email');?></li>
+                        <li class="pr-2 text-white" data-toggle="tooltip" data-placement="left" title="<?php echo $this->session->userdata('uid')?>"><?php echo $this->session->userdata('email');?></li>
                         <li class="pr-2 log text-white float-right"><a class="log-a" href="<?php echo site_url('logout');?>">Odhlásit se <i class="fas fa-sign-out-alt"></i></a></li>
                         <?php else: ?>
                         <li class="pr-2 log text-white"><a class="log-a" href="<?php echo site_url('login');?>">Přihlášení <i class="fas fa-sign-in-alt"></i></a></li>

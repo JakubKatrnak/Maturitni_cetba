@@ -4,9 +4,6 @@ require dirname(dirname(dirname(__FILE__))).'/vendor/autoload.php';
 
 use Kreait\Firebase\Factory;
 
-const URL = 'https://maturitnicetba-2924e-default-rtdb.firebaseio.com';
-const TOKEN = 'FD27Jn3Ww0FAwuzJQsisooDK0l2CpNu2KM4A7Tk4';
-
 class Application extends CI_Controller
 {
 

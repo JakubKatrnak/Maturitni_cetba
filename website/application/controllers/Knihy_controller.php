@@ -11,14 +11,33 @@ class Knihy_controller extends Application
 		parent::__construct();
 	}
 
-	public function kniha($id)
-	{
-        $view = 'kniha';
+	public function index(){
+		$view = 'knihy/index';
 		if (!file_exists('application/views/'.$view.'.php')) {
 			show_404();
 		}
 
-		$data['book'] = $this->firebase()->get('/oauh_knihy/'.$id);
+		$data['knihy'] = $this->database()
+		->getReference('oauh_knihy')
+		->orderByKey()
+		->getValue();
+
+		$data['title'] = 'Seznam knih';
+
+		$this->load->view('header', $data);
+		$this->load->view($view);
+	}
+
+	public function kniha($id)
+	{
+        $view = 'knihy/kniha';
+		if (!file_exists('application/views/'.$view.'.php')) {
+			show_404();
+		}
+
+		$data['book'] = $this->database()
+		->getReference('oauh_knihy/'.$id)
+		->getValue();
 
 		$data['title'] = $data['book']['nazev_knihy'];
 

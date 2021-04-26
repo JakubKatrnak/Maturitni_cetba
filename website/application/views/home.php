@@ -4,12 +4,18 @@
             <a href="<?php echo base_url('denik'); ?>">
                 <h1 class="text-center">Deník</h1>
             </a>
-            <div class="h6">Počet knih v deníku: <?php 
+            <div class="h6"><?php 
+            if(!empty($deniky)){?>
+                <h4 class="text-justify text-center d-block">Počet knih v deníku: 
+                <?php 
                 $pocet = -1;
                 foreach($deniky as $denik){
                     $pocet++;
                 }
-                echo $pocet;
+                echo $pocet."</h4>";
+            }else{ ?>
+                <h4 class="text-justify text-center d-block">Nenašli jsme žádné knihy ve vašem deníku</h4></b><h5 class="text-justify text-center d-block">Můžete je přidat jedním kliknutím<h5>
+            <?php }
             ?></div>
             <a href="<?php echo base_url('denik/pridat'); ?>">
                 <div class="btn btn-primary float-right btn-block">Přidat zápisek</div>

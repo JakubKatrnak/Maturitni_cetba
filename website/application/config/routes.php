@@ -55,6 +55,7 @@ $route['default_controller'] = 'Home_controller/home';
 $route['home'] = 'Home_controller/home';
 
 // KNIHY ROUTES
+$route['knihy'] = 'Knihy_controller/index';
 $route['kniha/(:num)'] = 'Knihy_controller/kniha/$1';
 
 // LOGIN ROUTES

@@ -27,10 +27,10 @@ class Home_controller extends Application
 			->orderByKey()
 			->limitToFirst($limit)
 			->getValue();
-		/*$data['deniky'] = $this->database()
-		->getReference('users/'.$this->session->userdata('uid').'/deniky')
+		$data['deniky'] = $this->database()
+		->getReference('deniky/'.$this->session->userdata('uid'))
 		->orderByKey()
-		->getValue();*/
+		->getValue();
 
 
 		$data['title'] = "Home";
