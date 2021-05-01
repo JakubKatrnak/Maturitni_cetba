@@ -10,3 +10,14 @@
 .bg-login-form {
     background-color: white;
 }
+
+hr.rounded {
+    border-top: 4px solid rgb(0, 123, 255);
+    border-radius: 5px;
+  }
+
+.align-bottom-right{
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}

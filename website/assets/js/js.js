@@ -12,3 +12,35 @@ $(document).ready(function() { // funkce pro zobrazení skrytého hesla na strá
         }
     });
 });
+
+function kniha_db(){
+    document.getElementById("vyber_knihy_db").style.display = "flex";
+    document.getElementById("vyber_knihy_vlastni").style.display = "none";
+    document.getElementById("autor").disabled = true;
+    document.getElementById("obdobi").disabled = true;
+    document.getElementById("isbn").disabled = true;
+    document.getElementById("pocet_stran").disabled = true;
+    document.getElementById("zanr").disabled = true;
+
+    document.getElementById("prebal").style.visibility = "visible";
+    document.getElementById("prebal-header").style.display = "block";
+
+}
+
+function kniha_vlastni(){
+    document.getElementById("vyber_knihy_db").style.display = "none";
+    document.getElementById("vyber_knihy_vlastni").style.display = "flex";
+    document.getElementById("autor").disabled = false;
+    document.getElementById("autor").value = "";
+    document.getElementById("obdobi").disabled = false;
+    document.getElementById("obdobi").value = "";
+    document.getElementById("isbn").disabled = false;
+    document.getElementById("isbn").value = "";
+    document.getElementById("pocet_stran").disabled = false;
+    document.getElementById("pocet_stran").value = "";
+    document.getElementById("zanr").disabled = false;
+    document.getElementById("zanr").value = "";
+
+    document.getElementById("prebal-header").style.display = "none";
+    document.getElementById("prebal").style.visibility = "hidden";
+}

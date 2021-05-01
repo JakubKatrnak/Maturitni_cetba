@@ -4,25 +4,48 @@
             <a href="<?php echo base_url('denik'); ?>">
                 <h1 class="text-center">Deník</h1>
             </a>
-            <div class="h6"><?php 
-            if(!empty($deniky)){?>
-                <h4 class="text-justify text-center d-block">Počet knih v deníku: 
-                <?php 
-                $pocet = -1;
-                foreach($deniky as $denik){
-                    $pocet++;
-                }
-                echo $pocet."</h4>";
-            }else{ ?>
-                <h4 class="text-justify text-center d-block">Nenašli jsme žádné knihy ve vašem deníku</h4></b><h5 class="text-justify text-center d-block">Můžete je přidat jedním kliknutím<h5>
-            <?php }
-            ?></div>
+            <div class="h6"><?php
+                            if (!empty($deniky)) { ?>
+                    <h4 class="text-justify text-center d-block">Počet knih v deníku:
+                        <?php
+                                $pocet = -1;
+                                foreach ($deniky as $denik) {
+                                    $pocet++;
+                                } ?>
+                        <?php echo $pocet; ?></h4>
+                    <div class="card-columns">
+                        <!-- start card-columns -->
+
+                        <?php foreach ($deniky as $val => $denik) {
+                                    if (!empty($denik)) { ?>
+                                <a href="<?php echo base_url('denik/' . $this->session->userdata('uid') . "/" . $val); ?>">
+                                    <!--img class="card-img-top img-fluida" src="<?php //echo $denik['prebal'] 
+                                                                                    ?>" alt="<?php // echo $denik[0]['nazev_knihy']; 
+                                                                                                    ?> - přebal"-->
+                                    <div class="card">
+                                        <div class="card-header">
+                                        <?php echo $denik['book'];?>
+                                        </div>
+                                        <div class="card-body">
+                                            <p class="card-text"><?php echo substr($denik['notes'], 0, 20)."...";?></p>
+                                        </div>
+                                    </div>
+                                </a>
+                        <?php }
+                                } ?>
+                    </div> <!-- end card-columns -->
+                <?php } else { ?>
+                    <h4 class="text-justify text-center d-block">Nenašli jsme žádné knihy ve vašem deníku</h4></b>
+                    <h5 class="text-justify text-center d-block">Můžete je přidat jedním kliknutím<h5>
+                        <?php }
+                        ?>
+            </div>
             <a href="<?php echo base_url('denik/pridat'); ?>">
                 <div class="btn btn-primary float-right btn-block">Přidat zápisek</div>
             </a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 jumbotron mt-5 border-white">
-            <a href="<?php echo base_url('knihy');?>">
+            <a href="<?php echo base_url('knihy'); ?>">
                 <h1 class="text-center">Knihy</h1>
             </a>
             <div class="card-columns">
@@ -39,7 +62,7 @@
                                 </div>
                             </div>
                         </a>
-                    <?php }
+                <?php }
                 } ?>
             </div> <!-- end card-columns -->
         </div>
@@ -49,29 +72,4 @@
             </a>
         </div>
     </div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Název</th>
-                <th scope="col">Autor</th>
-                <th scope="col">Období</th>
-                <th scope="col">ISBN</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($knihy as $kniha) {
-                if (!empty($kniha)) { ?>
-                    <tr>
-                        <td><?php echo $kniha['id_knihy']; ?></td>
-                        <td><?php echo $kniha['nazev_knihy']; ?></td>
-                        <td><?php echo $kniha['autor']; ?></td>
-                        <td><?php echo $kniha['id_obdobi']; ?></td>
-                        <td><?php echo $kniha['isbn']; ?></td>
-                    </tr>
-                    <tr>
-                <?php }
-            } ?>
-        </tbody>
-    </table>
 </div>

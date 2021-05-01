@@ -58,6 +58,11 @@ $route['home'] = 'Home_controller/home';
 $route['knihy'] = 'Knihy_controller/index';
 $route['kniha/(:num)'] = 'Knihy_controller/kniha/$1';
 
+// DENIKY ROUTES
+$route['denik'] = 'Deniky_controller/index';
+$route['denik/pridat/?(:num)?'] = 'Deniky_controller/add_view/$1';
+$route['denik/pridat_db'] = 'Deniky_controller/add';
+
 // LOGIN ROUTES
 $route['login'] = 'User_controller/login';
 $route['login/authenticate'] = 'User_controller/authenticate';
