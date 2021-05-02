@@ -49,6 +49,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 | Examples:	my-controller/index	-> my_controller/index
 |		my-controller/my-method	-> my_controller/my_method
 */
+/*
+(([A-Za-z0-9-_]*)) = regex for keys in firebase (with starting and ending brackets for CI3 standards)
+*/
+
 
 // HOME ROUTES
 $route['default_controller'] = 'Home_controller/home';
@@ -60,8 +64,10 @@ $route['kniha/(:num)'] = 'Knihy_controller/kniha/$1';
 
 // DENIKY ROUTES
 $route['denik'] = 'Deniky_controller/index';
-$route['denik/pridat/?(:num)?'] = 'Deniky_controller/add_view/$1';
+$route['denik/zobrazit/([A-Za-z0-9-_]*)'] = "Deniky_controller/view/$1";
+$route['denik/pridat/?(:num)?'] = 'Deniky_controller/new/$1';
 $route['denik/pridat_db'] = 'Deniky_controller/add';
+$route['denik/edit/([A-Za-z0-9-_]*)'] = 'Deniky_controller/edit/$1';
 
 // LOGIN ROUTES
 $route['login'] = 'User_controller/login';
