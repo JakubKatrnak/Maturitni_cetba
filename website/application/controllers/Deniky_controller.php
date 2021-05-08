@@ -16,9 +16,19 @@ class Deniky_controller extends Application
 
 	public function index()
 	{
+		$view = "deniky/index";
+		if (!file_exists('application/views/' . $view . '.php')) {
+			show_404();
+		}
 
-		
+		$data['title'] = "Moje zápisky";
+		$data['deniky'] = $this->database()
+			->getReference('deniky/' . $this->session->userdata('uid'))
+			->orderByKey()
+			->getValue();
 
+		$this->load->view('header', $data);
+		$this->load->view($view);
 	}
 
 	public function view($key)
@@ -44,7 +54,12 @@ class Deniky_controller extends Application
 			show_404();
 		}
 
-		$data['selected_book'] = $kniha_id;
+		if ($kniha_id == NULL) {
+			$data['selected_book'] = 1;
+		} else {
+			$data['selected_book'] = $kniha_id;
+		}
+
 		$data['knihy'] = $this->database()
 			->getReference('oauh_knihy')
 			->orderByKey()

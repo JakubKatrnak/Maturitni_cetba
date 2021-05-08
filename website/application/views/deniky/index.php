@@ -1,13 +1,12 @@
 <div class="container">
     <div class="row">
-        <div class="col-lg-4 col-md-4 col-sm-12 jumbotron mt-5 border-white">
+        <div class="col-lg-12 col-md-12 col-sm-12 col-12 jumbotron mt-5 border-white">
             <a href="<?php echo base_url('denik'); ?>">
-                <h1 class="text-center">Deník</h1>
+                <h1 class="text-center">Moje zápisky</h1>
             </a>
             <div class="h6">
                 <?php if (!empty($deniky)) { ?>
                     <?php
-                    $limit = 0;
                     $pocet = 0;
                     foreach ($deniky as $denik) {
                         $pocet++;
@@ -15,7 +14,6 @@
                     <h4 class="text-justify text-center d-block">Počet knih v deníku: <?php echo $pocet; ?></h4>
                     <?php foreach ($deniky as $val => $denik) {
                         if (!empty($denik)) { ?>
-                            <?php if($limit <= 3){ ?>
                             <a href="<?php echo base_url('denik/zobrazit/' . $val); ?>">
                                 <div class="card mb-2 border-primary">
                                     <div class="card-header bg-primary text-white">
@@ -38,7 +36,6 @@
                                     </div>
                                 </div>
                             </a>
-                            <?php $limit++; } ?>
                     <?php }
                     } ?>
                 <?php } else { ?>
@@ -49,33 +46,6 @@
             </div>
             <a href="<?php echo base_url('denik/pridat'); ?>">
                 <div class="btn btn-primary float-right btn-block">Přidat zápisek</div>
-            </a>
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 jumbotron mt-5 border-white">
-            <a href="<?php echo base_url('knihy'); ?>">
-                <h1 class="text-center">Knihy</h1>
-            </a>
-            <div class="card-columns">
-                <!-- start card-columns -->
-
-                <?php foreach ($knihy as $kniha) {
-                    if (!empty($kniha)) { ?>
-                        <a href="<?php echo base_url('kniha/' . $kniha['id_knihy']); ?>">
-                            <div class="card m-1 border-primary">
-                                <img class="card-img-top img-fluida" src="<?php echo $kniha['prebal']; ?>" alt="<?php echo $kniha['nazev_knihy']; ?> - přebal">
-                                <div class="card-block">
-                                    <h6 class="card-title"><?php echo $kniha['nazev_knihy']; ?></h4>
-                                        <p class="card-text"></p>
-                                </div>
-                            </div>
-                        </a>
-                <?php }
-                } ?>
-            </div> <!-- end card-columns -->
-        </div>
-        <div class="col-lg-4 col-md-4 col-sm-12 jumbotron mt-5 border-white">
-            <a href="<?php echo base_url('doporucena-cetba'); ?>">
-                <h1 class="text-center">Doporučená četba</h1>
             </a>
         </div>
     </div>

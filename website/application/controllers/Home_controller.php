@@ -21,15 +21,15 @@ class Home_controller extends Application
 			show_404();
 		}
 
-		$limit = 9;
+		$limitKnihy = 9;
 		$data['knihy'] = $this->database()
 			->getReference('oauh_knihy')
 			->orderByKey()
-			->limitToFirst($limit)
+			->limitToFirst($limitKnihy)
 			->getValue();
 		$data['deniky'] = $this->database()
 			->getReference('deniky/' . $this->session->userdata('uid'))
-			->orderByKey()
+			->orderByKey()			
 			->getValue();
 
 		
