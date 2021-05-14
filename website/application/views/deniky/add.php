@@ -35,7 +35,7 @@
                     <div class="input-group-prepend">
                         <span class="input-group-text">Název knihy</span>
                     </div>
-                    <input class="form-control" id="nazev" placeholder="Název knihy">
+                    <input class="form-control" id="nazev" name="kniha" placeholder="Název knihy">
                 </div>
                 <div class="input-group mb-3" id="vyber_knihy_db">
                     <div class="input-group-prepend">

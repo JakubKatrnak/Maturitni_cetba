@@ -68,6 +68,7 @@ $route['denik/zobrazit/([A-Za-z0-9-_]*)'] = "Deniky_controller/view/$1";
 $route['denik/pridat/?(:num)?'] = 'Deniky_controller/new/$1';
 $route['denik/pridat_db'] = 'Deniky_controller/add';
 $route['denik/edit/([A-Za-z0-9-_]*)'] = 'Deniky_controller/edit/$1';
+$route['denik/odstranit/([A-Za-z0-9-_]*)'] = 'Deniky_controller/delete/$1';
 
 // LOGIN ROUTES
 $route['login'] = 'User_controller/login';

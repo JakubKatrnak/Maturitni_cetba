@@ -110,4 +110,15 @@ class Deniky_controller extends Application
 
 		redirect(base_url('denik/zobrazit/' . $key));
 	}
+
+	public function delete($key)
+	{
+		$this->database()
+			->getReference('deniky/'.$this->session->userdata('uid').'/'.$key)
+			->remove();
+
+		$this->session->set_flashdata('odstraneno','Zápisek byl odstraněn');
+
+		redirect(base_url('denik'));
+	}
 }

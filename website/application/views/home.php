@@ -50,6 +50,9 @@
             <a href="<?php echo base_url('denik/pridat'); ?>">
                 <div class="btn btn-primary float-right btn-block">Přidat zápisek</div>
             </a>
+            <a href="<?php echo base_url('denik'); ?>">
+                <div class="btn btn-primary float-right btn-block mt-2">Zobrazit všechny zápisky</div>
+            </a>
         </div>
         <div class="col-lg-4 col-md-4 col-sm-12 jumbotron mt-5 border-white">
             <a href="<?php echo base_url('knihy'); ?>">

@@ -1,6 +1,6 @@
 <?php
 defined('BASEPATH') or exit('No direct script access allowed');
-require dirname(dirname(dirname(__FILE__))).'\vendor\autoload.php';
+require dirname(dirname(dirname(__FILE__))).'/vendor/autoload.php';
 
 use Kreait\Firebase\Factory;
 
