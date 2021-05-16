@@ -62,6 +62,9 @@ $route['home'] = 'Home_controller/home';
 $route['knihy'] = 'Knihy_controller/index';
 $route['kniha/(:num)'] = 'Knihy_controller/kniha/$1';
 
+// DOPORUCENA CETBA ROUTES
+$route['doporucena-cetba'] = 'Knihy_controller/recommended';
+
 // DENIKY ROUTES
 $route['denik'] = 'Deniky_controller/index';
 $route['denik/zobrazit/([A-Za-z0-9-_]*)'] = "Deniky_controller/view/$1";

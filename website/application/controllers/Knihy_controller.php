@@ -44,4 +44,16 @@ class Knihy_controller extends Application
 		$this->load->view('header', $data);
 		$this->load->view($view);
 	}
+
+	public function recommended(){
+		$view = 'wip';
+		if (!file_exists('application/views/'.$view.'.php')) {
+			show_404();
+		}
+
+		$data['title'] = "Stránka se připravuje";
+
+		$this->load->view('header', $data);
+		$this->load->view($view);
+	}
 }

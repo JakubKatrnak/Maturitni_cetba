@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-12 text-center">
             <div class="h1">Seznam knih</div>
-            <a href="#" id="button_show_table" onclick="show_book_table();">
+            <a href="" id="button_show_table" onclick="show_book_table();">
                 <p>Zobrazit tabulku</p>
             </a>
         </div>
@@ -67,7 +67,23 @@
                         <tr>
                             <td><a href="<?php echo base_url('kniha/' . $kniha['id_knihy']) ?>"><?php echo $kniha['nazev_knihy']; ?></a></td>
                             <td><?php echo $kniha['autor']; ?></td>
-                            <td><?php echo $kniha['id_obdobi']; ?></td>
+                            <td><?php switch($kniha['id_obdobi']){
+                                case 1:
+                                    echo "Světová a česká literatura do konce 18. století";
+                                    break;
+                                case 2:
+                                    echo "Světová a česká literatura 19. století";
+                                    break;
+                                case 3:
+                                    echo "Světová literatura 20. a 21. století";
+                                    break;
+                                case 4:
+                                    echo "Česká literatura 20. a 21. století";
+                                    break;
+                                default:
+                                    echo $kniha['id_obdobi'];
+                                    break;
+                             } ?></td>
                             <td><?php echo $kniha['isbn']; ?></td>
                         </tr>
                         <tr>
