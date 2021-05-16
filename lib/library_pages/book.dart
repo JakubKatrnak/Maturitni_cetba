@@ -2,19 +2,24 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projekt_prj/login/models/user.dart';
+import 'package:provider/provider.dart';
+import '../database.dart';
 import '../quote.dart';
 
 class Book extends StatefulWidget
-  {
+{
 
-    final String bookName;
-    final String bookId;
+  final String bookName;
+  final String bookId;
+  final String bookAuthor;
+  final String bookGenre;
 
-    const Book({Key key, this.bookId, this.bookName}) : super(key: key);
+  const Book({Key key, this.bookId, this.bookName, this.bookAuthor, this.bookGenre}) : super(key: key);
 
-    @override
-    _BookState createState() => _BookState();
-  }
+  @override
+  _BookState createState() => _BookState();
+}
 
 class _BookState extends State<Book> {
 
@@ -29,13 +34,46 @@ class _BookState extends State<Book> {
 
   @override
   Widget build(BuildContext context) {
+
+    GetUser user = Provider.of<GetUser>(context);
+
     getBook();
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
           title: Text(widget.bookName),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.post_add_outlined,
+                color: Colors.white,
+              ),
+              onPressed: () async{
+                dynamic result = await DatabaseService(uid: user.uid).addDiary(widget.bookName, widget.bookAuthor, widget.bookGenre,"");
+                if(result == null){
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: Text("Kniha byla přidána do deníku!"),
+                    ),
+                    barrierDismissible: true,
+                  );
+                }
+                else{
+                  showDialog(
+                    context: context,
+                    builder: (_) => AlertDialog(
+                      title: Text("přidání se nepodařilo"),
+                    ),
+                    barrierDismissible: true,
+                  );
+                }
+              },
+            )
+          ],
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -59,12 +97,12 @@ class _BookState extends State<Book> {
 
       body: Container(
         child: FirebaseAnimatedList(
-            query: bookRef,
-            itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double>animation, int){
-              Map kniha = snapshot.value;
-              return _buildBookItem(kniha: kniha);
-            },
-          ),
+          query: bookRef,
+          itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double>animation, int){
+            Map kniha = snapshot.value;
+            return _buildBookItem(kniha: kniha);
+          },
+        ),
       ),
     );
   }

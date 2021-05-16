@@ -1,6 +1,7 @@
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:projekt_prj/library_pages/home.dart';
 import 'package:projekt_prj/quote.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:projekt_prj/library_pages/book.dart';
@@ -46,7 +47,7 @@ class _BooksListState extends State<BooksList> {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Book(bookId: knihy['id_knihy'], bookName: knihy['nazev_knihy'],)),
+            MaterialPageRoute(builder: (context) => Book(bookId: knihy['id_knihy'], bookName: knihy['nazev_knihy'], bookAuthor: knihy['autor'], bookGenre: knihy['zanr'])),
           );
         },
 
@@ -117,6 +118,18 @@ class _BooksListState extends State<BooksList> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+            onPressed: () async{
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            },
+          ),
           title: Text('Knihy'),
           centerTitle: true,
           backgroundColor: Colors.transparent,

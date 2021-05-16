@@ -1,22 +1,45 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/material.dart';
 import 'package:projekt_prj/dairy_pages/my_dairy.dart';
 import 'package:projekt_prj/dairy_pages/new_dairy.dart';
+import 'package:projekt_prj/library_pages/home.dart';
+import 'package:projekt_prj/login/models/user.dart';
 import 'package:projekt_prj/quote.dart';
+import 'package:provider/provider.dart';
+
 
 class Dairy extends StatefulWidget {
   @override
   _DairyState createState() => _DairyState();
 }
 
+
 class _DairyState extends State<Dairy> {
   @override
   Widget build(BuildContext context) {
+
+    GetUser user = Provider.of<GetUser>(context);
+    Query getDiaries = FirebaseDatabase.instance.reference().child("deniky").child(user.uid).orderByKey();
+
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
+          leading: IconButton(
+            icon: Icon(
+              Icons.home,
+              color: Colors.white,
+            ),
+            onPressed: () async{
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Home()),
+              );
+            },
+          ),
           title: Text('Deník'),
           centerTitle: true,
           backgroundColor: Colors.transparent,
@@ -38,9 +61,25 @@ class _DairyState extends State<Dairy> {
         ),
       ),
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/image_4.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: ListView(
           children: <Widget>[
-            Comment(),
+            FirebaseAnimatedList(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                physics: ScrollPhysics(),
+                query: getDiaries,
+                itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double>animation, int) {
+                  Map diaries = snapshot.value;
+                  String bookId = snapshot.key;
+                  return _buildDiaries(diaries: diaries,bookId: bookId);
+                }
+            ),
           ],
         ),
       ),
@@ -59,11 +98,8 @@ class _DairyState extends State<Dairy> {
       ),
     );
   }
-}
 
-class Comment extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
+  Widget _buildDiaries({Map diaries, String bookId}) {
     return Card(
       color: Color(0xFF1976D2),
       margin: EdgeInsets.all(8.0),
@@ -72,7 +108,7 @@ class Comment extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => Comments()),
+            MaterialPageRoute(builder: (context) => Comments(diaryId: bookId)),
           );
         },
         child: Padding(
@@ -87,10 +123,7 @@ class Comment extends StatelessWidget {
                     children: <Widget>[
                       Align(
                           alignment: Alignment.topLeft,
-                          child: Text(
-                            'Nový deník',
-                            style: Theme.of(context).textTheme.headline3,
-                          )
+                          child: Text(diaries['book'], style: Theme.of(context).textTheme.headline3,)
                       ),
                     ],
                   )
@@ -102,6 +135,7 @@ class Comment extends StatelessWidget {
     );
   }
 }
+
 
 /*class Dairy extends StatefulWidget {
   @override

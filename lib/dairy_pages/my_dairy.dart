@@ -1,12 +1,22 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:projekt_prj/dairy_pages/dairy.dart';
-import 'package:projekt_prj/dairy_pages/new_dairy.dart';
+import 'package:projekt_prj/dairy_pages/edit_dairy.dart';
+import 'package:projekt_prj/login/models/user.dart';
+import 'package:provider/provider.dart';
 
+import '../database.dart';
 import '../quote.dart';
 
 class Comments extends StatefulWidget {
+
+  final String diaryId;
+
+  const Comments({Key key, this.diaryId}) : super(key: key);
+
   @override
   _CommentsState createState() => _CommentsState();
 }
@@ -14,14 +24,54 @@ class Comments extends StatefulWidget {
 class _CommentsState extends State<Comments> {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
+
+    GetUser user = Provider.of<GetUser>(context);
+
+    Query diaryRef = FirebaseDatabase.instance.reference()
+        .child("deniky")
+        .child(user.uid)
+        .orderByKey()
+        .equalTo(widget.diaryId);
+
+    String error = "Kniha";
+
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: AppBar(
-          title: Text('Deník'),
+          title: Text(error),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.delete,
+                color: Colors.white,
+              ),
+              onPressed: () async{
+                showDialog(
+                  context: context,
+                  builder:(_) => AlertDialog(
+                    title: Text("Chystáte se smazat knihu!"),
+                    content: Text("Kniha již nepůjde navráti"),
+                    actions: [
+                      FlatButton(onPressed: () async{
+                        dynamic result = await DatabaseService(uid: user.uid).deleteDiary(widget.diaryId);
+                        if(result == null) {
+                          setState(() => error='Smazání se nezdařilo');
+                        }
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(builder: (context) => Dairy()),
+                        );
+                      }, child: Text("smazat"))
+                    ],
+                  ),
+                  barrierDismissible: true,
+                );
+              },
+            )
+          ],
           centerTitle: true,
           backgroundColor: Colors.transparent,
           elevation: 0,
@@ -42,77 +92,93 @@ class _CommentsState extends State<Comments> {
         ),
       ),
       body: Container(
-        child: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 120.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
-                  child: new Image.asset('assets/images/reading.png', width: size.width*0.8,),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Kniha: ',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    Text('Lorem Ipsum', style: Theme.of(context).textTheme.headline5,),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Autor: ',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    Text('Lorem Ipsum', style: Theme.of(context).textTheme.headline5,),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Žánr: ',
-                      style: Theme.of(context).textTheme.headline4,
-                    ),
-                    Text(
-                      'Lorem Ipsum', style: Theme.of(context).textTheme.headline5,
-                    ),
-                  ],
-                ),
-                Align(
+        child: FirebaseAnimatedList(
+          query: diaryRef,
+          itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double>animation, int){
+            Map diary = snapshot.value;
+            return _buildDiary(diary: diary);
+          },
+        ),
+      ),
+    );
+  }
 
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Poznámky: ',
+  Widget _buildDiary({Map diary}){
+
+    String bookId= widget.diaryId;
+    String book= diary['book'];
+    String author= diary['author'];
+    String genre= diary['genre'];
+    String notes= diary['notes'];
+
+
+    return Container(
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 120.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
+                child: new Image.asset('assets/images/reading.png', width: 0.8,),
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Kniha: ',
                     style: Theme.of(context).textTheme.headline4,
                   ),
+                  Text(book, style: Theme.of(context).textTheme.headline5,),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Autor: ',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(author, style: Theme.of(context).textTheme.headline5,),
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Žánr: ',
+                    style: Theme.of(context).textTheme.headline4,
+                  ),
+                  Text(
+                    genre, style: Theme.of(context).textTheme.headline5,
+                  ),
+                ],
+              ),
+              Align(
+
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  'Poznámky: ',
+                  style: Theme.of(context).textTheme.headline4,
                 ),
-                Text('Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum', style: TextStyle(fontSize: 18),),
-                SizedBox(
-                  height: 20,
+              ),
+              Text(notes, style: TextStyle(fontSize: 18),),
+              SizedBox(
+                height: 20,
+              ),
+              Align(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Upravit(book: book, author: author, genre: genre, notes: notes, bookId: bookId),
                 ),
-                Row(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Ulozit(),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Upravit(),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
+
 }
+
 
 class Kniha extends StatelessWidget {
   @override
@@ -123,8 +189,8 @@ class Kniha extends StatelessWidget {
         //enabled: true,
         obscureText: false,
         decoration: InputDecoration(
-          border: OutlineInputBorder(),
-          labelText: 'Kniha'
+            border: OutlineInputBorder(),
+            labelText: 'Kniha'
         ),
       ),
     );
@@ -198,65 +264,36 @@ class Druh extends StatelessWidget {
 class Poznamky extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     return Padding(
       padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
       child: TextField(
         maxLines: null,
         obscureText: false,
         decoration: InputDecoration(
-            border: OutlineInputBorder(),
-            labelText: 'Poznámky',
+          border: OutlineInputBorder(),
+          labelText: 'Poznámky',
         ),
       ),
     );
   }
 }
 
-class Ulozit extends StatelessWidget {
+class Upravit extends StatefulWidget {
+
+  final String book;
+  final String author;
+  final String genre;
+  final String notes;
+  final String bookId;
+
+  const Upravit({Key key, this.book, this.author, this.genre, this.notes, this.bookId}) : super(key: key);
+
+
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          SizedBox(
-            width: size.width*0.4,
-            child: RaisedButton(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(150.0)),
-              onPressed: () async {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Dairy()),
-                );
-              },
-              textColor: Colors.white,
-              padding: const EdgeInsets.all(0.0),
-              child: Container(
-                width: size.width*0.8,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(25.0),
-                  gradient: LinearGradient(
-                    colors: <Color>[
-                      Color(0xFF0D47A1),
-                      Color(0xFF1976D2),
-                      Color(0xFF42A5F5),
-                    ],
-                  ),
-                ),
-                padding: const EdgeInsets.all(12.0),
-                child: Center(child: const Text('Uložit', textAlign: TextAlign.center, style: TextStyle(fontSize: 22))),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+  _UpravitState createState() => _UpravitState();
 }
 
-class Upravit extends StatelessWidget {
+class _UpravitState extends State<Upravit> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -271,7 +308,7 @@ class Upravit extends StatelessWidget {
               onPressed: () async {
                 Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => NewComments()),
+                  MaterialPageRoute(builder: (context) => EditComments(book: widget.book, author: widget.author, genre: widget.genre, notes: widget.notes, bookId: widget.bookId)),
                 );
               },
               textColor: Colors.white,

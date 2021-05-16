@@ -8,9 +8,18 @@ import 'package:provider/provider.dart';
 
 import '../quote.dart';
 
-class NewComments extends StatefulWidget {
+class EditComments extends StatefulWidget {
+
+  final String book;
+  final String author;
+  final String genre;
+  final String notes;
+  final String bookId;
+
+  const EditComments({Key key, this.book, this.author, this.genre, this.notes, this.bookId}) : super(key: key);
+
   @override
-  _NewCommentsState createState() => _NewCommentsState();
+  _EditCommentsState createState() => _EditCommentsState();
 }
 
 
@@ -21,9 +30,9 @@ String author= "";
 String genre= "";
 String notes= "";
 
-String error="Nový deník";
+String error="Upravit knihu";
 
-class _NewCommentsState extends State<NewComments> {
+class _EditCommentsState extends State<EditComments> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -67,11 +76,11 @@ class _NewCommentsState extends State<NewComments> {
                       padding: const EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 20.0),
                       child: new Image.asset('assets/images/writing.png', width: size.width*0.8,),
                     ),
-                    Kniha(),
-                    Autor(),
-                    Druh(),
-                    Poznamky(),
-                    Ulozit(),
+                    Kniha(book: widget.book),
+                    Autor(author: widget.author),
+                    Druh(genre: widget.genre),
+                    Poznamky(notes: widget.notes),
+                    Ulozit(bookId: widget.bookId),
                   ],
                 ),
               ),
@@ -84,16 +93,23 @@ class _NewCommentsState extends State<NewComments> {
 }
 
 class Kniha extends StatefulWidget {
+
+  final String book;
+
+  const Kniha({Key key, this.book}) : super(key: key);
+
   @override
   _KnihaState createState() => _KnihaState();
 }
 
 class _KnihaState extends State<Kniha> {
+
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
       child: TextFormField(
+        initialValue: widget.book,
         validator: (val) => val.isEmpty ? 'Vložte název knihy' : null,
         onChanged: (val){
           setState(()=>book=val);
@@ -110,6 +126,11 @@ class _KnihaState extends State<Kniha> {
 }
 
 class Autor extends StatefulWidget {
+
+  final String author;
+
+  const Autor({Key key, this.author}) : super(key: key);
+
   @override
   _AutorState createState() => _AutorState();
 }
@@ -120,6 +141,7 @@ class _AutorState extends State<Autor> {
     return Padding(
       padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
       child: TextFormField(
+        initialValue: widget.author,
         validator: (val) => val.isEmpty ? 'Vložte jméno autora' : null,
         onChanged: (val){
           setState(()=>author=val);
@@ -135,6 +157,11 @@ class _AutorState extends State<Autor> {
 }
 
 class Druh extends StatefulWidget {
+
+  final String genre;
+
+  const Druh({Key key, this.genre}) : super(key: key);
+
   @override
   _DruhState createState() => _DruhState();
 }
@@ -145,6 +172,7 @@ class _DruhState extends State<Druh> {
     return Padding(
       padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
       child: TextFormField(
+        initialValue: widget.genre,
         validator: (val) => val.isEmpty ? 'Vložte žánr knihy' : null,
         onChanged: (val){
           setState(()=>genre=val);
@@ -159,39 +187,12 @@ class _DruhState extends State<Druh> {
   }
 }
 
-/*class Poznamky extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    return Center(
-      child: Container(
-        margin: const EdgeInsets.all(15.0),
-        padding: const EdgeInsets.all(3.0),
-        height: size.height*0.5,
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: Colors.blueAccent,
-            width: 5.0,
-          ),
-        ),
-        child: Expanded(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: TextField(
-              obscureText: false,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Poznámky'
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}*/
-
 class Poznamky extends StatefulWidget {
+
+  final String notes;
+
+  const Poznamky({Key key, this.notes}) : super(key: key);
+
   @override
   _PoznamkyState createState() => _PoznamkyState();
 }
@@ -202,6 +203,7 @@ class _PoznamkyState extends State<Poznamky> {
     return Padding(
       padding: EdgeInsets.fromLTRB(10, 10, 20, 10),
       child: TextFormField(
+        initialValue: widget.notes,
         onChanged: (val){
           setState(()=>notes=val);
         },
@@ -217,6 +219,11 @@ class _PoznamkyState extends State<Poznamky> {
 }
 
 class Ulozit extends StatefulWidget {
+
+  final String bookId;
+
+  const Ulozit({Key key, this.bookId}) : super(key: key);
+
   @override
   _UlozitState createState() => _UlozitState();
 }
@@ -239,9 +246,9 @@ class _UlozitState extends State<Ulozit> {
               onPressed: () async {
                 if(_formKey.currentState.validate())
                 {
-                  dynamic result = await DatabaseService(uid: user.uid).addDiary(book, author, genre, notes);
+                  dynamic result = await DatabaseService(uid: user.uid).updateDiary(book, author, genre, notes, widget.bookId);
                   if(result == null){
-                    setState(() => error='Přidání se nezdařilo');
+                    setState(() => error='Úprava se nezdařila');
                   }
                   Navigator.pushReplacement(
                     context,
@@ -264,7 +271,7 @@ class _UlozitState extends State<Ulozit> {
                   ),
                 ),
                 padding: const EdgeInsets.all(12.0),
-                child: Center(child: const Text('Uložit', textAlign: TextAlign.center, style: TextStyle(fontSize: 22))),
+                child: Center(child: const Text('Upravit', textAlign: TextAlign.center, style: TextStyle(fontSize: 22))),
               ),
             ),
           ),

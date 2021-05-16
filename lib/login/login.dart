@@ -1,59 +1,81 @@
+
 import 'package:flutter/material.dart';
-import 'package:projekt_prj/library_pages/home.dart';
-import 'package:projekt_prj/login/registration.dart';
+import 'package:projekt_prj/login/auth.dart';
 import '../quote.dart';
 
+
+
 class LoginPage extends StatefulWidget {
+
+  final Function toggleView;
+  LoginPage({this.toggleView});
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
+final _formKey = GlobalKey<FormState>();
+final AuthenticationService _auth = AuthenticationService();
+
+String email= "";
+String password= "";
+bool _ObscureText = true;
+
+String error="Příhlášení";
+
 class _LoginPageState extends State<LoginPage> {
+
+  void passToggleView(){
+    widget.toggleView();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Colors.white,
-        extendBodyBehindAppBar: true,
-        appBar: PreferredSize(
-            preferredSize: Size.fromHeight(100),
-            child: AppBar(
-                title: Text('Přihlášení'),
-                centerTitle: true,
-                backgroundColor: Colors.transparent,
-                elevation: 0,
-                flexibleSpace: ClipPath(
-                    clipper: MyCustomClipperForAppBar(),
-                    child: Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: [
-                            Color(0xFF0D47A1),
-                            Color(0xFF1976D2),
-                            Color(0xFF42A5F5),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
+      extendBodyBehindAppBar: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(100),
+        child: AppBar(
+          title: Text(error),
+          centerTitle: true,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          flexibleSpace: ClipPath(
+            clipper: MyCustomClipperForAppBar(),
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFF0D47A1),
+                    Color(0xFF1976D2),
+                    Color(0xFF42A5F5),
+                  ],
                 ),
+              ),
             ),
+          ),
+        ),
+      ),
 
-        body: Container(
+      body: Container(
+        child: Form(
+          key: _formKey,
           child: Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Padding(
-                     padding: const EdgeInsets.all(8.0),
-                     child: new Image.asset('assets/images/log.png', width: size.width*0.6,),
+                    padding: const EdgeInsets.all(8.0),
+                    child: new Image.asset('assets/images/log.png', width: size.width*0.6,),
                   ),
                   LoginBox(),
                   SizedBox(height: 10.0),
                   LoginButton(),
                   SizedBox(height: 15.0),
-                  RegisterButton(),
+                  RegisterButton(toggleView: passToggleView),
                   SizedBox(height: 15.0,),
                   //ForgotPass(),
                 ],
@@ -61,59 +83,86 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ),
         ),
+      ),
     );
   }
 }
 
-
-
-class LoginBox extends StatelessWidget {
+class LoginBox extends  StatefulWidget{
+  @override
+  _LoginBoxState createState() => _LoginBoxState();
+}
+class _LoginBoxState extends State<LoginBox> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: TextField(
-              obscureText: false,
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.person,
-                  color: Colors.blue,
-                ),
-                border: OutlineInputBorder(),
-                labelText: 'E-mail',
-              ),
-            ),
-          ),
-          Padding(
-           padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
-            child: TextField(
-              obscureText: true,
-              decoration: InputDecoration(
-                icon: Icon(
-                  Icons.lock,
-                  color: Colors.blue,
-                ),
-                //suffixIcon: Icon(Icons.visibility, color: Colors.blue,),
-                suffixIcon: Icon(
-                    Icons.visibility,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+              child: TextFormField(
+                validator: (val) => val.isEmpty ? 'Vložte e-mail' : null,
+                onChanged: (val){
+                  setState(()=>email=val);
+                },
+                obscureText: false,
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.person,
                     color: Colors.blue,
                   ),
-                border: OutlineInputBorder(),
-                labelText: 'Heslo',
+                  border: OutlineInputBorder(),
+                  labelText: 'E-mail',
+                ),
               ),
             ),
-          )
-        ],
-      )
+            Padding(
+              padding: const EdgeInsets.fromLTRB(15, 10, 15, 10),
+              child: TextFormField(
+                validator: (val) => val.length <6 ? 'Vložte heslo o 6 nebo více znacích' : null,
+                onChanged: (val){
+                  setState(()=>password=val);
+                },
+                obscureText: _ObscureText,
+                decoration: InputDecoration(
+                  icon: Icon(
+                    Icons.lock,
+                    color: Colors.blue,
+                  ),
+                  //suffixIcon: Icon(Icons.visibility, color: Colors.blue,),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _ObscureText ? Icons.visibility : Icons.visibility_off,
+                      color: Colors.blue,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _ObscureText = !_ObscureText;
+                      });
+                    },
+                  ),
+                  /*suffixIcon: Icon(
+                    Icons.visibility,
+                    color: Colors.blue,
+                  ),*/
+                  border: OutlineInputBorder(),
+                  labelText: 'Heslo',
+                ),
+              ),
+            )
+          ],
+        )
     );
   }
 }
 
-class LoginButton extends StatelessWidget{
+class LoginButton extends StatefulWidget{
+  @override
+  _LoginButtonState createState() => _LoginButtonState();
+}
+
+class _LoginButtonState extends State<LoginButton> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -125,11 +174,14 @@ class LoginButton extends StatelessWidget{
             width: size.width*0.8,
             child: RaisedButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(350.0)),
-              onPressed: () async {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Home()),
-                );
+              onPressed: () async{
+                if(_formKey.currentState.validate())
+                {
+                  dynamic result = await _auth.signIn(email, password);
+                  if(result == null){
+                    setState(() => error='Nesprávný e-mail nebo heslo');
+                  }
+                }
               },
               textColor: Colors.white,
               padding: const EdgeInsets.all(0.0),
@@ -156,7 +208,16 @@ class LoginButton extends StatelessWidget{
   }
 }
 
-class RegisterButton extends StatelessWidget {
+class RegisterButton extends StatefulWidget {
+
+  final Function toggleView;
+  RegisterButton({this.toggleView});
+
+  @override
+  _RegisterButtonState createState() => _RegisterButtonState();
+}
+
+class _RegisterButtonState extends State<RegisterButton> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -168,11 +229,8 @@ class RegisterButton extends StatelessWidget {
             width: size.width*0.8,
             child: RaisedButton(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25.0)),
-              onPressed: () async {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (context) => Registration()),
-                );
+              onPressed: () {
+                widget.toggleView();
               },
               textColor: Colors.white,
               padding: const EdgeInsets.all(0.0),
@@ -197,7 +255,7 @@ class RegisterButton extends StatelessWidget {
     );
   }
 }
-
+/*
 class ForgotPass extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -215,3 +273,4 @@ class ForgotPass extends StatelessWidget {
     );
   }
 }
+*/

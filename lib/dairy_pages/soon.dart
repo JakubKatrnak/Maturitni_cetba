@@ -36,30 +36,30 @@ class _LoadingScreenState extends State<LoadingScreen> {
         ),
       ),
       body: Container(
-          child: SafeArea(
-            child: Center(
-              child: Column(
-                children: [
-                  Text(
-                    'This page is preparing for you',
-                    style: TextStyle(
-                      fontSize: 22.0,
-                      wordSpacing: 1.0,
-                    ),
+        child: SafeArea(
+          child: Center(
+            child: Column(
+              children: [
+                Text(
+                  'This page is preparing for you',
+                  style: TextStyle(
+                    fontSize: 22.0,
+                    wordSpacing: 1.0,
                   ),
-                  SizedBox(height: 30.0),
-                  LoadingBouncingGrid.square(
-                    borderSize: 5.0,
-                    borderColor:  Color(0xFF1976D2),
-                    size: 300.0,
-                    backgroundColor: Color(0xFF42A5F5),
-                    duration: Duration(milliseconds: 1500),
-                    inverted: true,
-                  ),
-                ],
-              ),
+                ),
+                SizedBox(height: 30.0),
+                LoadingBouncingGrid.square(
+                  borderSize: 5.0,
+                  borderColor:  Color(0xFF1976D2),
+                  size: 300.0,
+                  backgroundColor: Color(0xFF42A5F5),
+                  duration: Duration(milliseconds: 1500),
+                  inverted: true,
+                ),
+              ],
             ),
           ),
+        ),
       ),
     );
   }
