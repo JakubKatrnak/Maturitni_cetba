@@ -14,7 +14,7 @@
     <div class="row">
         <div class="col-12 text-center">
             <div class="h1">Seznam knih</div>
-            <a href="" id="button_show_table" onclick="show_book_table();">
+            <a href="#" id="button_show_table" onclick="show_book_table();">
                 <p>Zobrazit tabulku</p>
             </a>
         </div>
