@@ -34,7 +34,6 @@ class _CommentsState extends State<Comments> {
         .equalTo(widget.diaryId);
 
     String error = "Kniha";
-
     return Scaffold(
       backgroundColor: Colors.white,
       extendBodyBehindAppBar: true,
@@ -92,6 +91,12 @@ class _CommentsState extends State<Comments> {
         ),
       ),
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage('assets/images/background_note.jpg'),
+            fit: BoxFit.cover,
+          ),
+        ),
         child: FirebaseAnimatedList(
           query: diaryRef,
           itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double>animation, int){
@@ -112,6 +117,7 @@ class _CommentsState extends State<Comments> {
     String notes= diary['notes'];
 
 
+    Size size = MediaQuery.of(context).size;
     return Container(
       child: SingleChildScrollView(
         child: Padding(
@@ -129,7 +135,15 @@ class _CommentsState extends State<Comments> {
                     'Kniha: ',
                     style: Theme.of(context).textTheme.headline4,
                   ),
-                  Text(book, style: Theme.of(context).textTheme.headline5,),
+
+                ],
+              ),
+              Row(
+                children: [
+                  Flexible(child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(book, style: Theme.of(context).textTheme.headline5,),
+                  )),
                 ],
               ),
               Row(
@@ -138,7 +152,16 @@ class _CommentsState extends State<Comments> {
                     'Autor: ',
                     style: Theme.of(context).textTheme.headline4,
                   ),
-                  Text(author, style: Theme.of(context).textTheme.headline5,),
+                ],
+              ),
+              Row(
+                children: [
+                    Flexible(
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(author, style: Theme.of(context).textTheme.headline5,),
+                        ),
+                    ),
                 ],
               ),
               Row(
@@ -147,8 +170,16 @@ class _CommentsState extends State<Comments> {
                     'Žánr: ',
                     style: Theme.of(context).textTheme.headline4,
                   ),
-                  Text(
-                    genre, style: Theme.of(context).textTheme.headline5,
+
+                ],
+              ),
+              Row(
+                children: [
+                  Flexible(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(genre, style: Theme.of(context).textTheme.headline5,),
+                    ),
                   ),
                 ],
               ),
@@ -165,6 +196,7 @@ class _CommentsState extends State<Comments> {
                 height: 20,
               ),
               Align(
+                alignment: Alignment.bottomLeft,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Upravit(book: book, author: author, genre: genre, notes: notes, bookId: bookId),
@@ -176,7 +208,6 @@ class _CommentsState extends State<Comments> {
       ),
     );
   }
-
 }
 
 
@@ -296,6 +327,7 @@ class Upravit extends StatefulWidget {
 class _UpravitState extends State<Upravit> {
   @override
   Widget build(BuildContext context) {
+    double sizeHeight = MediaQuery.of(context).size.height;
     Size size = MediaQuery.of(context).size;
     return Center(
       child: Column(
@@ -326,7 +358,9 @@ class _UpravitState extends State<Upravit> {
                   ),
                 ),
                 padding: const EdgeInsets.all(12.0),
-                child: Center(child: const Text('Upravit', textAlign: TextAlign.center, style: TextStyle(fontSize: 22))),
+                child: Center(
+                    child: const Text('Upravit', textAlign: TextAlign.center, style: TextStyle(fontSize: 22))
+                ),
               ),
             ),
           ),

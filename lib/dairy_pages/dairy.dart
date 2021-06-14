@@ -122,7 +122,7 @@ class _DairyState extends State<Dairy> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
                       Align(
-                          alignment: Alignment.topLeft,
+                          alignment: Alignment.center,
                           child: Text(diaries['book'], style: Theme.of(context).textTheme.headline3,)
                       ),
                     ],
